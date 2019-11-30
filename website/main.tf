@@ -13,7 +13,12 @@ provider "aws" {
 #
 # S3
 #    1. aws_s3_bucket - Creates a bucket with static web hosting properties
-#    2. aws_s3_bucket_object - Uploads HTML5 files
+#    2. aws_s3_bucket_object - Uploads HTML5 files. Each uploaded file is a separate Terrafrom resource. For the web site to be rendered correctly by a web browser, the content_type is being selected based in a file extension matched to the desired MIME type defined in the mime_types variable.
+#    Example of getting file name extention:
+#        > terraform console
+#        [J> element(split(".",basename("assets/webfonts/fa-brands-400.woff/browser.min.js")),length(split(".",basename("assets/webfonts/fa-brands-400.woff/browser.min.js")))-1)
+#        js
+#
 #    3. aws_s3_bucket_policy - Sets bucket policy
 #
 
@@ -34,9 +39,7 @@ resource "aws_s3_bucket_object" "website" {
   key          = each.value
   source       = format("%s%s", var.path_to_html5, each.value)
   content_type = lookup(var.mime_types, element(split(".", basename(each.value)), length(split(".", basename(each.value))) - 1), "")
-  # content_type = "image/svg+xml"
-  etag = filemd5(format("%s%s", var.path_to_html5, each.value))
-  # html5up-massively /12
+  etag         = filemd5(format("%s%s", var.path_to_html5, each.value))
 }
 
 resource "aws_s3_bucket_policy" "webbucket" {
@@ -49,8 +52,9 @@ resource "aws_s3_bucket_policy" "webbucket" {
           Action    = "s3:GetObject"
           Effect    = "Allow"
           Principal = "*"
-          Resource  = "${aws_s3_bucket.webbucket.arn}/*"
-          Sid       = "WebBucketPolicy"
+          # Resource  = "${aws_s3_bucket.webbucket.arn}/*"
+          Resource = format("%s/*", aws_s3_bucket.webbucket.arn)
+          Sid      = "WebBucketPolicy"
         },
       ]
       Version = "2012-10-17"
@@ -61,8 +65,8 @@ resource "aws_s3_bucket_policy" "webbucket" {
 #
 # Route53
 #
-#    1. aws_route53_zone data source - Queries available Hosted Zone for domain name defined on variable.
-#    2. aws_route53_record - Creates an Alias A reacord in the Route53 Hosted Zone pointing to the S3 bucket web endpoint.
+#    1. aws_route53_zone data source - Queries available Hosted Zone for domain name defined on a variable.
+#    2. aws_route53_record - Creates an Alias A record in the Route53 Hosted Zone pointing to the S3 bucket web endpoint.
 #
 
 data "aws_route53_zone" "hz" {
