@@ -34,3 +34,6 @@ override.tf.json
 
 # txt files
 **/*.txt
+
+# Terrafor plan out files
+**/*.plan
