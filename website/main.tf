@@ -1,10 +1,22 @@
-# Provider
+#
+#  AWS provider
+#    Arguments:
+#       1. Region (Required) - Passed as a variable.
+#       2. Profile (Optional) - The profile of shared credentials set with the 'aws configure --profile' command. Passed as a variable.
+#
+
 provider "aws" {
   region  = var.aws_region
   profile = var.aws_profile
 }
 
+#
 # S3
+#    1. aws_s3_bucket - Creates a bucket with static web hosting properties
+#    2. aws_s3_bucket_object - Uploads HTML5 files
+#    3. aws_s3_bucket_policy - Sets bucket policy
+#
+
 resource "aws_s3_bucket" "webbucket" {
   bucket = format("%s.%s", var.subdomain_name, var.domain_name)
   acl    = "public-read"
@@ -45,6 +57,12 @@ resource "aws_s3_bucket_policy" "webbucket" {
     }
   )
 }
+
+#
+# Route53
+#
+#     1. aws_route53_zone data source - Queries available Hosted Zone for
+#
 
 data "aws_route53_zone" "hz" {
   name = format("%s.", var.domain_name)
