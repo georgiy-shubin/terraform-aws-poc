@@ -61,7 +61,8 @@ resource "aws_s3_bucket_policy" "webbucket" {
 #
 # Route53
 #
-#     1. aws_route53_zone data source - Queries available Hosted Zone for
+#    1. aws_route53_zone data source - Queries available Hosted Zone for domain name defined on variable.
+#    2. aws_route53_record - Creates an Alias A reacord in the Route53 Hosted Zone pointing to the S3 bucket web endpoint.
 #
 
 data "aws_route53_zone" "hz" {
