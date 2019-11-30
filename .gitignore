@@ -31,3 +31,6 @@ override.tf.json
 
 # SSH Keys
 */*keypair*
+
+# txt files
+**/*.txt
