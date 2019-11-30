@@ -37,17 +37,17 @@ variable "subdomain_name" {
 
 variable "mime_types" {
   default = {
-    css      = "text/css"
-    eot      = "application/vnd.ms-fontobject"
-    html     = "text/html"
-    jpg      = "image/jpeg"
-    js       = "application/javascript"
-    png      = "image/png"
-    scss     = "application/javascript"
-    svg      = "image/svg+xml"
-    ttf      = "font/ttf"
-    txt      = "text/plain"
-    woff     = "font/woff"
-    woff2    = "font/woff2"
+    css   = "text/css"
+    eot   = "application/vnd.ms-fontobject"
+    html  = "text/html"
+    jpg   = "image/jpeg"
+    js    = "application/javascript"
+    png   = "image/png"
+    scss  = "application/javascript"
+    svg   = "image/svg+xml"
+    ttf   = "font/ttf"
+    txt   = "text/plain"
+    woff  = "font/woff"
+    woff2 = "font/woff2"
   }
 }

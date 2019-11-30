@@ -132,7 +132,7 @@ resource "aws_security_group" "sec-group" {
 #       The local_exec provisioner updates name servers of the domain once the Delegation Set is created.
 #       Example:
 #               aws route53domains --profile <profile> --region us-east-1 update-domain-nameservers --domain <domain_name> --nameservers Name=ns-1309.awsdns-35.org Name=ns-1980.awsdns-55.co.uk Name=ns-48.awsdns-06.com Name=ns-668.awsdns-19.net
-#    2. aws_route53_zone - Creates a Hosted Zone for domain passed through variable. Name servers are assigned though the Delegation Set.\
+#    2. aws_route53_zone - Creates a Hosted Zone for domain passed through variable. Name servers are assigned though the Delegation Set.
 #    3. aws_route53_record - Creates the jenkins.<domain_name> A record for the Public IP of the EC2 Instance.
 #
 

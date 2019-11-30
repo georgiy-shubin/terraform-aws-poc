@@ -21,7 +21,7 @@ resource "aws_s3_bucket_object" "website" {
   bucket       = aws_s3_bucket.webbucket.id
   key          = each.value
   source       = format("%s%s", var.path_to_html5, each.value)
-  content_type = lookup(var.mime_types, element(split(".",basename(each.value)),length(split(".",basename(each.value)))-1), "")
+  content_type = lookup(var.mime_types, element(split(".", basename(each.value)), length(split(".", basename(each.value))) - 1), "")
   # content_type = "image/svg+xml"
   etag = filemd5(format("%s%s", var.path_to_html5, each.value))
   # html5up-massively /12
@@ -46,18 +46,18 @@ resource "aws_s3_bucket_policy" "webbucket" {
   )
 }
 
-# data "aws_route53_zone" "hz" {
-#   name = format("%s.", var.domain_name)
-# }
+data "aws_route53_zone" "hz" {
+  name = format("%s.", var.domain_name)
+}
 
-# resource "aws_route53_record" "website" {
-#   zone_id = data.aws_route53_zone.hz.zone_id
-#   name    = aws_s3_bucket.webbucket.id
-#   type    = "A"
+resource "aws_route53_record" "website" {
+  zone_id = data.aws_route53_zone.hz.zone_id
+  name    = aws_s3_bucket.webbucket.id
+  type    = "A"
 
-#   alias {
-#     name                   = aws_s3_bucket.webbucket.website_domain
-#     zone_id                = aws_s3_bucket.webbucket.hosted_zone_id
-#     evaluate_target_health = false
-#   }
-# }
+  alias {
+    name                   = aws_s3_bucket.webbucket.website_domain
+    zone_id                = aws_s3_bucket.webbucket.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
