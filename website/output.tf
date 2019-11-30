@@ -2,9 +2,9 @@ output "aws_s3_bucket_website_endpoint" {
   value = aws_s3_bucket.webbucket.website_endpoint
 }
 
-# output "website_address" {
-#   value = aws_route53_record.website.name
-# }
+output "website_address" {
+  value = aws_route53_record.website.name
+}
 
 output "aws_s3_empty_bucket_command" {
   value = format("aws s3 rm s3://%s --recursive --profile %s", aws_s3_bucket.webbucket.id, var.aws_profile)
