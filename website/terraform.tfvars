@@ -1,6 +1,5 @@
 aws_region  = "us-east-1"
 aws_profile = "terraform-aws-web"
-# path_to_html5      = "/var/lib/jenkins/html5up/html5up-stellar/"
-path_to_html5  = "C:/Users/A662469/Downloads/html5up-massively/"
+#path_to_html5  = 
 domain_name    = "gshubin.net"
 subdomain_name = "website"

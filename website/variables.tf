@@ -1,4 +1,3 @@
-# Provider
 variable "aws_region" {
   type        = string
   description = "AWS Region"
@@ -10,20 +9,10 @@ variable "aws_profile" {
   default     = "default"
 }
 
-# S3
-# variable "aws_s3_bucket_name" {
-#   type        = string
-#   description = "AWS S3 Backup Name. Must be unique across AWS"
-# }
-
 variable "path_to_html5" {
   type        = string
   description = "Path to the html files to upload to the web hosting bucket"
 }
-
-###################
-####  Route53  ####
-###################
 
 variable "domain_name" {
   type        = string
