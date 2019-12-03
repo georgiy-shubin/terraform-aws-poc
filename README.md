@@ -2,9 +2,10 @@
 
 ### Following AWS Services reflected in the POC:
 1.  **Network:** VPC, Internet Gateway, Route Table, Route, Subnet, Security Group
-2.  **Route53:** Domains, Hosted Zone, Delegation Set
-3.  **Compute:** EC2 Instance, Key Pair
-4.  **Storage:** Amazon S3, Static Web Hosting
+2.  **IAM**: Role, Policy, Instance Profile
+3.  **Route53:** Domains, Hosted Zone, Delegation Set
+4.  **Compute:** EC2 Instance, Key Pair
+5.  **Storage:** Amazon S3, Static Web Hosting
 
 ### Terraform technics used:
 1.  Data Sources
