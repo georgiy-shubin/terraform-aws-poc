@@ -186,11 +186,8 @@ EOF
   }
 }
 
-resource "aws_iam_policy_attachment" "jenkins-role-policy" {
-  name = "jenkins-role-policy"
-  # users      = ["${aws_iam_user.user.name}"]
-  roles = [aws_iam_role.jenkins-role.name]
-  # groups     = ["${aws_iam_group.group.name}"]
+resource "aws_iam_role_policy_attachment" "jenkins-role-policy" {
+  role       = aws_iam_role.jenkins-role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
@@ -213,8 +210,8 @@ resource "aws_key_pair" "ssh-keypair" {
 }
 
 resource "aws_instance" "jenkins-instnace" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = var.instance_type
   subnet_id              = tolist(data.aws_subnet_ids.subnets.ids)[0]
   vpc_security_group_ids = [aws_security_group.sec-group.id]
   key_name               = aws_key_pair.ssh-keypair.key_name
