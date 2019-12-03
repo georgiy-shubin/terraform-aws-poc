@@ -157,6 +157,49 @@ resource "aws_route53_record" "jenkins" {
 }
 
 #
+# IAM
+#    aws_iam_role - Creates a role.
+#    aws_iam_policy_attachment - Attaches the AdministratorAccess policy to the role created by aws_iam_role
+#    aws_iam_instance_profile - Creates an EC2 Instance Profile and assigned role created by aws_iam_role. The profile is used by EC2 Instance to get assess to AWS resoources
+#
+
+resource "aws_iam_role" "jenkins-role" {
+  name = "jenkins_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
+  tags = {
+    Name = var.tag_name
+  }
+}
+
+resource "aws_iam_policy_attachment" "jenkins-role-policy" {
+  name = "jenkins-role-policy"
+  # users      = ["${aws_iam_user.user.name}"]
+  roles = [aws_iam_role.jenkins-role.name]
+  # groups     = ["${aws_iam_group.group.name}"]
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+resource "aws_iam_instance_profile" "jenkins_instance_profile" {
+  name = "jenkins_instance_profile"
+  role = aws_iam_role.jenkins-role.name
+}
+
+#
 #  EC2
 #      Prerequisite: An SSH key must be created in the same folder where terraform files located.
 #
@@ -170,11 +213,12 @@ resource "aws_key_pair" "ssh-keypair" {
 }
 
 resource "aws_instance" "jenkins-instnace" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
   subnet_id              = tolist(data.aws_subnet_ids.subnets.ids)[0]
   vpc_security_group_ids = [aws_security_group.sec-group.id]
   key_name               = aws_key_pair.ssh-keypair.key_name
+  iam_instance_profile   = aws_iam_instance_profile.jenkins_instance_profile.name
   depends_on             = [aws_subnet.subnet]
   user_data              = <<-EOF
   #!/bin/bash
